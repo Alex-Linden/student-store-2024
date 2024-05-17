@@ -9,7 +9,7 @@ const app = express()
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use(cors())
-app.use("/store", productRouter)
+app.use("/product", productRouter)
 
 /* Handle all 404 errors that weren't matched by a route */
 app.use((req, res, next) => {

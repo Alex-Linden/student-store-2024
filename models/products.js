@@ -1,5 +1,6 @@
 const db = require('../database'); // Assuming you have a database module
 
+
 class Product {
   constructor(name, price, quantity) {
     this.name = name;
@@ -7,8 +8,23 @@ class Product {
     this.quantity = quantity;
   }
 
+  // Get all products from the database
+  static async getAll() {
+    const query = `SELECT * FROM products`;
+    try {
+      const results = await db.query(query);
+      const products = results.map((row) => {
+        const { name, price, quantity } = row;
+        return new Product(name, price, quantity);
+      });
+      return products;
+    } catch (error) {
+      console.error('Error getting all products:', error);
+      throw error;
+    }
+  }
   // Create a new product in the database
-  async create() {
+  static async create() {
     const query = `INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)`;
     const values = [this.name, this.price, this.quantity];
     try {
@@ -37,7 +53,7 @@ class Product {
   }
 
   // Update a product in the database
-  async update() {
+  static async update() {
     const query = `UPDATE products SET name = ?, price = ?, quantity = ? WHERE id = ?`;
     const values = [this.name, this.price, this.quantity, this.id];
     try {
@@ -49,7 +65,7 @@ class Product {
   }
 
   // Delete a product from the database
-  async delete() {
+  static async delete() {
     const query = `DELETE FROM products WHERE id = ?`;
     try {
       await db.query(query, [this.id]);
