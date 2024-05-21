@@ -76,4 +76,6 @@ class Product {
   }
 }
 
+// Export the Product class
+
 module.exports = Product;
